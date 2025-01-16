@@ -149,3 +149,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Start the countdown immediately
 startCountdown();
+
+// Function to display a popup with local blur effect and auto-close
+function showMusicPopupWithLocalBlur(audioElement) {
+    if (audioElement) {
+        // Create the popup container
+        const popup = document.createElement("div");
+        popup.style.position = "fixed";
+        popup.style.top = "50%";
+        popup.style.left = "50%";
+        popup.style.transform = "translate(-50%, -50%)";
+        popup.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
+        popup.style.padding = "20px";
+        popup.style.borderRadius = "10px";
+        popup.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+        popup.style.textAlign = "center";
+        popup.style.zIndex = "1000";
+        popup.style.backdropFilter = "blur(10px)"; // Add local blur effect
+
+        // Add popup content
+        const popupText = document.createElement("p");
+        popupText.textContent = "Music started! Turning the volume up for the best experience.";
+        popupText.style.fontFamily = "Arial, sans-serif";
+        popupText.style.fontSize = "16px";
+        popupText.style.color = "#333";
+        popup.appendChild(popupText);
+
+        // Append the popup to the body
+        document.body.appendChild(popup);
+
+        // Set volume to maximum (1.0)
+        audioElement.volume = 1.0;
+
+        // Log the current volume level (optional)
+        console.log("Current volume:", audioElement.volume);
+
+        // Auto-close the popup after 2 seconds
+        setTimeout(() => {
+            popup.remove();
+        }, 2000);
+    } else {
+        console.error("Audio element not found.");
+    }
+}
+
+// Add event listener to start music and trigger the popup
+document.addEventListener("DOMContentLoaded", () => {
+    const musicElement = document.querySelector('audio'); // Assuming there's an <audio> element on the page
+    if (musicElement) {
+        musicElement.addEventListener("play", () => showMusicPopupWithLocalBlur(musicElement));
+    } else {
+        console.error("Audio element is not available on the page.");
+    }
+});
